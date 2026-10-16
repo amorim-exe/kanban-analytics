@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: revo-sqlserver
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: YourStrong@Password
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - revo-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: revo-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - revo-network
+
+volumes:
+  sqlserver_data:
+  redis_data:
+
+networks:
+  revo-network:
+    driver: bridge
